@@ -24,9 +24,9 @@ namespace AruodasOOPTests.Tests
                 "PHOTOLINK", "https://youtu.be/dQw4w9WgXcQ?si=WCfwdxt9ncH90Ksn", "https://www.3dvista.com/samples/live_pano_ny.html", "20000", 
                 "37060750088", "pardaveeeejai88@harakirimail.com", true, true, true);
 
-            sklypas.FillInListingMax();
-           // SubmitListing();
-           // Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
+           sklypas.FillInListingMax();
+           SubmitListing();
+           Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
 
 
         }

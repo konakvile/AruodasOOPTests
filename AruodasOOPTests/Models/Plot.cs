@@ -351,7 +351,7 @@ namespace AruodasOOPTests.Models
 
         public void SetUpPhotos() 
         {
-            IWebElement upload_file = Driver.FindElement(By.Id("uploadPhotoBtn"));
+            IWebElement upload_file = Driver.FindElement(By.XPath("//*[@id=\"uploadPhotoBtn\"]/input"));
 
             upload_file.SendKeys("C:\\Users\\akvile.kondrotaite\\OneDrive - SERMO\\Desktop\\Test files\\Images\\JPG\\alpaca.jpg");
         }
