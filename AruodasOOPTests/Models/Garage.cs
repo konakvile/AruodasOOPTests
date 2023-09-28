@@ -9,24 +9,26 @@ using System.Threading.Tasks;
 
 namespace AruodasOOPTests.Models
 {
-    internal class Plot : RealEstate
+    internal class Garage : RealEstate
     {
         public string Region { get; set; }
         public string Settlement { get; set; }
         public string Microdisctrict { get; set; }
         public string Street { get; set; }
+        public bool GarageOrParkingSpace { get; set; } // input values true - garage or false - parking space
         public string StreetNo { get; set; }
         public bool ShowStreetNo { get; set; }
         public string UniqItemNo { get; set; }
         public bool ShowUniqItemNo { get; set; }
         public string Area { get; set; }
-
-        /* Purpose Checkbox values
-         * "1" Residential land, "2" Manufacturing land, "3" Agricultural, "4" Collective garden, 
-         * "5" Forestrial, "6" Factory, "7" Storage, "8" Commercial, "9" Recreational, "10" Other */
-        public string[] PurposeCB { get; set; }
-
-        // additional checkboxes can be added later on
+        
+        /*Type input values
+         * GARAGE 1 - Stone, 2 - Iron, 3 - Underground, 4 - Multistory, 5 - Other
+         * PARKING SPACE 6 - Underground parking, 7 - Parking lot, 8 - Multistory car park, 9 - Other 
+         * // gal other bus galima ta pati skaiciu naudoti, priklausys nuo XPath ar pan.
+         */
+        public int Type { get; set; }
+        public int CarCapacity { get; set; }
         public string Description { get; set; }
         public string UpPhotos { get; set; } 
         public string YoutubeLink { get; set; }
@@ -39,35 +41,26 @@ namespace AruodasOOPTests.Models
         public bool AcceptTandC { get; set; }
 
 
-        public Plot () : base() 
+        public Garage() : base() 
         { 
         }
 
-        // testams tik del adreso dalies pildymo
-        public Plot(string region, string settlement, string microdistrict, string street, string streetNo, bool showStreetNo) : base()
-        {
-            Region = region;
-            Settlement = settlement;
-            Microdisctrict = microdistrict;
-            Street = street;
-            StreetNo = streetNo;
-            ShowStreetNo = showStreetNo;
-        }
-
         // minimalus objekto uzpildymas (raudonuojantys laukai, e-mail neitrauktas nes buna pre-filled)
-        public Plot (string region, string settlement, string area, string lotPrice, string phoNo, bool acceptTandC, string[] checkBoxes) : base()
+        public Garage(string region, string settlement, bool garageOrParkingSpace, int type, int carCapacity, string lotPrice, string phoNo, bool acceptTandC) : base()
         {
             Region = region;
             Settlement = settlement;
-            Area = area;
+            GarageOrParkingSpace = garageOrParkingSpace;
+            Type = type;
+            CarCapacity = carCapacity;
             LotPrice = lotPrice;
             PhoNo = phoNo;
             AcceptTandC = acceptTandC;
-            PurposeCB = checkBoxes;
+            
         }
         // maksimalus objekto uzpildymas (butini ir nebutini laukai)
-        public Plot(string region, string settlement, string microdistrict, string street, string streetNo, 
-            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, string[] purposeCB, 
+        public Garage(string region, string settlement, string microdistrict, string street, bool garageOrParkingSpace, string streetNo, 
+            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, int type, int carCapacity,
             string description, string upPhoto, string youtubeLink, string tour3DLink, string lotPrice, 
             string phoNo, string email, bool doNotShowEmail, bool turnOffChat, bool acceptTandC) : base()
         {
@@ -75,12 +68,14 @@ namespace AruodasOOPTests.Models
             Settlement = settlement;
             Microdisctrict = microdistrict;
             Street = street;
+            GarageOrParkingSpace = garageOrParkingSpace;
             StreetNo = streetNo;
             ShowStreetNo = showStreetNo;
             UniqItemNo = uniqItemNo;
             ShowUniqItemNo = showuniqItemNo;
             Area = area;
-            PurposeCB = purposeCB;
+            Type = type;
+            CarCapacity = carCapacity;
             Description = description;
             UpPhotos = upPhoto;
             YoutubeLink = youtubeLink;
@@ -93,40 +88,32 @@ namespace AruodasOOPTests.Models
             AcceptTandC = acceptTandC;
         }
 
-        public void FillInListingMin() // first test, will not select district
+        public void FillInListingMin()
         {
-            Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=11&offer_type=1");
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[3]/span[1]/input[2]")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"regionDropdown\"]/li[1]/input")).SendKeys(this.Region);
-            Thread.Sleep(2000);
-            Driver.FindElement(By.XPath("//*[@id=\"regionDropdown\"]/li[1]/input")).SendKeys(Keys.Enter);
+            Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=13&offer_type=1");
+            SetRegion();
+            SetSettlement();
+            SetType();
+            SetCarCapacity();
+            SetLotPrice();
+            SetPhoNo();
+            SetDoNotShowEmail();
+            SetTurnOffChat();
+            SetAcceptTandC();
 
-            Driver.FindElement(By.Id("districtTitle")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"districts_461\"]/li[1]/input")).SendKeys(this.Settlement);
-            Thread.Sleep(2000);
-            Driver.FindElement(By.XPath("//*[@id=\"districts_461\"]/li[1]/input")).SendKeys(Keys.Enter);
-
-            Driver.FindElement(By.Id("fieldFAreaOverAll")).SendKeys(this.Area);
-
-            SetPurposeCB();
-
-            Driver.FindElement(By.Id("priceField")).SendKeys(this.LotPrice);                        
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).SendKeys(this.PhoNo);
-            
-            if (this.AcceptTandC){
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[38]/span[1]/div/div/label/span")).Click();
-            } 
         }
 
         public void FillInListingMax()
         {
-            Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=11&offer_type=1");
+            Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=13&offer_type=1");
 
-            SetLocation(); 
+            SetLocation();
+            SetGarageOrParkingSpace();
             SetUnqItemNo();
             SetShowUniqItemNo();
             SetArea();
-            SetPurposeCB();
+            SetType();
+            SetCarCapacity();
             SetDescription();
             SetUpPhotos(); //should consider an array too for multiple photos
             SetYoutubeLink();
@@ -174,10 +161,6 @@ namespace AruodasOOPTests.Models
            
             IList<IWebElement> lis = Driver.FindElements(By.ClassName("dropdown-input-values-address"))[1].FindElements(By.TagName("li"));
             Console.WriteLine("SUSKAICIUOTOS GYVENVIETES: " + lis.Count);
-
-            // Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
-            // Wait.Until(ExpectedConditions.ElementExists(By.Id("district").FindElement(By.ClassName("dropdown-input-values-address"))).FindElement(By.TagName("li[" + (settlementCount + 1) + "]"))).Click();
-            //*[@id="districts_461"]/li[89]
 
             if (lis.Count > 14)
             {
@@ -260,30 +243,41 @@ namespace AruodasOOPTests.Models
 
         }
 
+        public void SetGarageOrParkingSpace()
+        {
+            if (this.GarageOrParkingSpace)
+            {
+                Driver.FindElement(By.XPath("//*[@id=\"parking_checkbox\"]/div/label/span")).Click(); // garage
+            }
+            else {
+                Driver.FindElement(By.XPath("//*[@id=\"whole_building_checkbox\"]/div/label/span")).Click(); // parking space
+            }          
+        }
+
         public void SetStreetNo()
         {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[7]/span[1]/input")).SendKeys(this.StreetNo);
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[8]/span[1]/input")).SendKeys(this.StreetNo);
         }
 
         public void SetShowStreetNo()
         {
             if (!(this.ShowStreetNo))
             {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[7]/div/div/label/span")).Click();
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[8]/div/div/label/span")).Click();
             }
         }
 
         public void SetUnqItemNo()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[1]/input")).SendKeys(this.UniqItemNo);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[12]/div[1]/input")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[12]/div[1]/input")).SendKeys(this.UniqItemNo);
         }
 
         public void SetShowUniqItemNo()
         {
             if (!(this.ShowUniqItemNo))
             {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[2]/div/label/span")).Click();
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[12]/div[2]/div/label/span")).Click();
             }
         }
         public void SetArea()
@@ -291,50 +285,87 @@ namespace AruodasOOPTests.Models
             Driver.FindElement(By.Id("fieldFAreaOverAll")).SendKeys(this.Area);
         }
 
-        public void SetPurposeCB()
+        public void SetTypeGarage()
         {
-            for (int i = 0; i < this.PurposeCB.Length; i++)
+            switch (this.Type)
             {
-                switch (this.PurposeCB[i])
-                {
-                    case "1": // Residential land
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[1]/label/span")).Click();
-                        break;
-                    case "2": // Manufacturing land
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[2]/label/span")).Click();
-                        break;
-                    case "3": // Agricultural
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[3]/label/span")).Click();
-                        break;
-                    case "4": // Collective garden
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[4]/label/span")).Click();
-                        break;
-                    case "5": // Forestrial
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[5]/label/span")).Click();
-                        break;
-                    case "6": // Factory
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[6]/label/span")).Click();
-                        break;
-                    case "7": // Storage
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[7]/label/span")).Click();
-                        break;
-                    case "8": // Commercial
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[8]/label/span")).Click();
-                        break;
-                    case "9": // Recreational
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[9]/label/span")).Click();
-                        break;
-                    case "10": // Other
-                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[10]/label/span")).Click();
-                        break;
-                }
+                case 1: // Stone
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[1]")).Click();
+                    break;
+                case 2: // Iron
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[2]")).Click();
+                    break;
+                case 3: // Underground
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[3]")).Click();
+                    break;
+                case 4: // Multistory
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[4]")).Click();
+                    break;
+                case 5: // Other
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[5]")).Click();
+                    break;
+            }
+        }
+
+        public void SetTypeParkingSpace()
+        {
+            switch (this.Type)
+            {
+                case 6: // Underground parking
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[17]/div/div[1]")).Click();
+                    break;
+                case 7: // Parking lot
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[17]/div/div[2]")).Click();
+                    break;
+                case 8: // Multistory car park
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[17]/div/div[3]")).Click();
+                    break;
+                case 9: // Other
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[17]/div/div[4]")).Click();
+                    break;
+            }
+
+        }
+
+        public void SetType()
+        {
+            if (this.GarageOrParkingSpace)
+            {
+                SetTypeGarage(); // garage
+            }
+            else
+            {
+                SetTypeParkingSpace(); // parking space
+            }
+        }
+
+
+        public void SetCarCapacity()
+        {
+            switch (this.CarCapacity)
+            {
+                case 1: 
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/div[1]")).Click();
+                    break;
+                case 2: 
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/div[2]")).Click();
+                    break;
+                case 3: 
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/div[3]")).Click();
+                    break;
+                case 4: 
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/div[4]")).Click();
+                    break;
+                default: // Other
+                    Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/span/input")).SendKeys(this.CarCapacity + "");
+                    break;
             }
         }
 
         public void SetDescription()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div[1]/textarea")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div[1]/textarea")).SendKeys(this.Description);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/div/div[1]/textarea")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/div/div[1]/textarea")).SendKeys(this.Description);
         }
 
         public void SetUpPhotos() 
@@ -346,15 +377,15 @@ namespace AruodasOOPTests.Models
 
         public void SetYoutubeLink()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/span[1]/input")).SendKeys(this.YoutubeLink);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).SendKeys(this.YoutubeLink);
 
         }
 
         public void SetTour3DLink()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[31]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[31]/span[1]/input")).SendKeys(this.Tour3DLink);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).SendKeys(this.Tour3DLink);
 
         }
 
@@ -367,16 +398,16 @@ namespace AruodasOOPTests.Models
 
         public void SetPhoNo()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).SendKeys(this.PhoNo);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[38]/span[1]/input")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[38]/span[1]/input")).SendKeys(this.PhoNo);
 
         }
 
         public void SetEmail()
         {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).Clear();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).SendKeys(this.Email);
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[39]/span[1]/input")).Click();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[39]/span[1]/input")).Clear();
+            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[39]/span[1]/input")).SendKeys(this.Email);
 
         }
 
@@ -384,7 +415,7 @@ namespace AruodasOOPTests.Models
         {
             if (this.DoNotShowEmail)
             {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[36]/div/div/div/label/span")).Click();
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[40]/div/div/div/label/span")).Click();
             }
 
         }
@@ -393,7 +424,7 @@ namespace AruodasOOPTests.Models
         {
             if (this.TurnOffChat)
             {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[37]/div/div/div/label/span")).Click();
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[41]/div/div/div/label/span")).Click();
             }
         }
 
@@ -401,7 +432,7 @@ namespace AruodasOOPTests.Models
         {
             if (this.AcceptTandC)
             {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[38]/span[1]/div/div/label/span")).Click();
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[42]/span[1]/div/div/label/span")).Click();
             }
         }
 
