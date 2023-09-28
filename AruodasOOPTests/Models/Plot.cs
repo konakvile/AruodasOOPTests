@@ -11,15 +11,7 @@ namespace AruodasOOPTests.Models
 {
     internal class Plot : RealEstate
     {
-        public string Region { get; set; }
-        public string Settlement { get; set; }
-        public string Microdisctrict { get; set; }
-        public string Street { get; set; }
-        public string StreetNo { get; set; }
-        public bool ShowStreetNo { get; set; }
-        public string UniqItemNo { get; set; }
-        public bool ShowUniqItemNo { get; set; }
-        public string Area { get; set; }
+       
 
         /* Purpose Checkbox values
          * "1" Residential land, "2" Manufacturing land, "3" Agricultural, "4" Collective garden, 

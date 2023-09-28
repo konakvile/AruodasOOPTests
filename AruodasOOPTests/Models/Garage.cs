@@ -29,6 +29,8 @@ namespace AruodasOOPTests.Models
          */
         public int Type { get; set; }
         public int CarCapacity { get; set; }
+        public bool MarkDetails { get; set; }
+        public string[] FeaturesCB { get; set; }
         public string Description { get; set; }
         public string UpPhotos { get; set; } 
         public string YoutubeLink { get; set; }
@@ -359,6 +361,34 @@ namespace AruodasOOPTests.Models
                 default: // Other
                     Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[18]/div/span/input")).SendKeys(this.CarCapacity + "");
                     break;
+            }
+        }
+
+        public void SetFeaturesCBGarage()
+        {
+            for (int i = 0; i < this.FeaturesCB.Length; i++)
+            {
+                switch (this.FeaturesCB[i])
+                {
+                    case "1": // Security
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[1]/label/span")).Click();
+                        break;
+                    case "2": // Automatic gates
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[2]/label/span")).Click();
+                        break;
+                    case "3": // Pit
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[3]/label/span")).Click();
+                        break;
+                    case "4": // Basement
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[4]/label/span")).Click();
+                        break;
+                    case "5": // Water
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[5]/label/span")).Click();
+                        break;
+                    case "6": // Heating
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[6]/label/span")).Click();
+                        break;
+                }
             }
         }
 
