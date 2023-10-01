@@ -69,13 +69,14 @@ namespace AruodasOOPTests.Models
         }
 
         // Tik minimalaus uzpildymo testams
-        public RealEstate (string region, string settlement, string lotPrice, string phoNo, bool acceptTandC)
+        public RealEstate (string region, string settlement, string area, string lotPrice, string phoNo, bool acceptTandC)
         {
             this.Driver = DriverClass.Driver;
             this.Wait = DriverClass.Wait;
 
             Region = region;
             Settlement = settlement;
+            Area = area;
             LotPrice = lotPrice;
             PhoNo = phoNo;
             AcceptTandC = acceptTandC;
@@ -113,7 +114,7 @@ namespace AruodasOOPTests.Models
         public void SetSettlement()
         {
 
-            Driver.FindElement(By.XPath("//*[@id=\"district\"]")).Click();
+            Driver.FindElement(By.Id("districtTitle")).Click();
 
             IList<IWebElement> lis = Driver.FindElements(By.ClassName("dropdown-input-values-address"))[1].FindElements(By.TagName("li"));
             Console.WriteLine("SUSKAICIUOTOS GYVENVIETES: " + lis.Count);
@@ -211,6 +212,139 @@ namespace AruodasOOPTests.Models
             try { SetMicrodistrict(); }
             catch { Console.WriteLine("Microdistrict field is hidden"); }
             SetStreet();
+        }
+
+        public void SetUnqItemNo()
+        {
+            Driver.FindElement(By.Name("RCNumber")).Click();
+            Driver.FindElement(By.Name("RCNumber")).SendKeys(this.UniqItemNo);
+        }
+
+        public void SetShowUniqItemNo()
+        {
+            if (!(this.ShowUniqItemNo))
+            {
+                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[2]/div/label/span")).Click();
+            }
+        }
+        public void SetArea()
+        {
+            Driver.FindElement(By.Id("fieldFAreaOverAll")).SendKeys(this.Area);
+        }
+
+       public void SetDescription()
+        {
+           Driver.FindElement(By.Name("notes_lt")).Click();
+           Driver.FindElement(By.Name("notes_lt")).SendKeys(this.Description);
+        }
+
+        public void SetUpPhotos()
+        {
+            IWebElement upload_file = Driver.FindElement(By.XPath("//*[@id=\"uploadPhotoBtn\"]/input"));
+
+            upload_file.SendKeys("C:\\Users\\akvile.kondrotaite\\OneDrive - SERMO\\Desktop\\Test files\\Images\\JPG\\alpaca.jpg");
+        }
+
+        public void SetYoutubeLink()
+        {
+            Driver.FindElement(By.Name("Video")).Click();
+            Driver.FindElement(By.Name("Video")).SendKeys(this.YoutubeLink);
+        }
+
+        public void SetTour3DLink()
+        {
+            Driver.FindElement(By.Name("tour_3d")).Click();
+            Driver.FindElement(By.Name("tour_3d")).SendKeys(this.Tour3DLink);
+        }
+
+        public void SetLotPrice()
+        {
+            Driver.FindElement(By.Id("priceField")).Click();
+            Driver.FindElement(By.Id("priceField")).SendKeys(this.LotPrice);
+
+        }
+
+        public void SetPhoNo()
+        {
+            IList<IWebElement> elements = Driver.FindElement(By.ClassName("new-object-from")).FindElements(By.TagName("li"));
+            elements[elements.Count - 7].FindElements(By.TagName("span"))[0].FindElement(By.TagName("input")).SendKeys(this.PhoNo);
+        }
+
+        public void SetEmail()
+        {
+            Driver.FindElement(By.Name("email")).Click();
+            Driver.FindElement(By.Name("email")).Clear();
+            Driver.FindElement(By.Name("email")).SendKeys(this.Email);
+        }
+
+        public void SetDoNotShowEmail()
+        {
+            if (this.DoNotShowEmail)
+            {
+                IList<IWebElement> elements = Driver.FindElement(By.ClassName("new-object-from")).FindElements(By.TagName("li"));
+                elements[elements.Count - 5].FindElements(By.TagName("span"))[0].Click();
+            }
+
+        }
+
+        // teisingas mokytojo variantas
+        public void SetTurnOffChat()
+        {
+            if (this.TurnOffChat)
+            {
+                IList<IWebElement> elements = Driver.FindElement(By.ClassName("new-object-from")).FindElements(By.TagName("li"));
+                elements[elements.Count - 4].FindElements(By.TagName("span"))[0].Click();
+            }
+        }
+        
+        public void SetAcceptTandC()
+        {
+            if (this.AcceptTandC)
+            {
+                IList<IWebElement> elements = Driver.FindElement(By.ClassName("new-object-from")).FindElements(By.TagName("li"));
+                elements[elements.Count - 3].FindElements(By.TagName("span"))[1].Click();
+            }
+        }
+
+        // variantas ta pati metoda naudoti paskutinems 3 checkboxams
+        public void BottomCB(bool checkbox, int position)
+        {
+            if (checkbox)
+            {
+                IList<IWebElement> elements = Driver.FindElement(By.ClassName("new-object-from")).FindElements(By.TagName("li"));
+                elements[elements.Count - position].FindElements(By.TagName("span"))[1].Click();
+            }
+        }
+
+        public virtual void FillInListingMax()
+        {
+
+         SetLocation();
+         SetUnqItemNo();
+         SetShowUniqItemNo();
+         SetArea();
+         SetDescription();
+         SetUpPhotos();
+         SetYoutubeLink();
+         SetTour3DLink();
+         SetLotPrice();
+         SetPhoNo();
+         SetEmail();
+         SetDoNotShowEmail();
+         SetTurnOffChat();
+         SetAcceptTandC();
+
+        }
+
+        public virtual void FillInListingMin()
+        {
+            SetRegion();
+            SetSettlement();
+            SetArea();
+            SetLotPrice();
+            SetPhoNo();
+            SetAcceptTandC();
+
         }
 
     }

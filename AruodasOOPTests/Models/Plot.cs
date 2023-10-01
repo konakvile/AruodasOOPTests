@@ -35,11 +35,11 @@ namespace AruodasOOPTests.Models
 
         // minimalus objekto uzpildymas (raudonuojantys laukai, e-mail neitrauktas nes buna pre-filled)
         public Plot (string region, string settlement, string area, string lotPrice, string phoNo, bool acceptTandC, string[] checkBoxes)
-            : base(region, settlement, lotPrice, phoNo, acceptTandC)
+            : base(region, settlement, area, lotPrice, phoNo, acceptTandC)
         {
-            Area = area;
             PurposeCB = checkBoxes;
         }
+
         // maksimalus objekto uzpildymas (butini ir nebutini laukai)
         public Plot(string region, string settlement, string microdistrict, string street, string streetNo, 
             bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, string[] purposeCB, 
@@ -79,29 +79,23 @@ namespace AruodasOOPTests.Models
             } 
         } */
 
-        public void FillInListingMax()
+        override public void FillInListingMax()
         {
             Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=11&offer_type=1");
 
-            SetLocation(); 
-            SetUnqItemNo();
-            SetShowUniqItemNo();
-            SetArea();
+            base.FillInListingMax();
             SetPurposeCB();
-            SetDescription();
-            SetUpPhotos(); //should consider an array too for multiple photos
-            SetYoutubeLink();
-            SetTour3DLink();
-            SetLotPrice();
-            SetPhoNo();
-            SetEmail();
-            SetDoNotShowEmail();
-            SetTurnOffChat();
-            SetAcceptTandC();
-
         }
 
-        public void SetLocation()
+        override public void FillInListingMin()
+        {
+            Driver.Navigate().GoToUrl("https://www.aruodas.lt/ideti-skelbima/?obj=11&offer_type=1");
+
+            base.FillInListingMin();
+            SetPurposeCB();
+        }
+
+        override public void SetLocation()
         {
            base.SetLocation();
             SetStreetNo();
@@ -119,24 +113,6 @@ namespace AruodasOOPTests.Models
             {
                 Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[7]/div/div/label/span")).Click();
             }
-        }
-
-        public void SetUnqItemNo()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[1]/input")).SendKeys(this.UniqItemNo);
-        }
-
-        public void SetShowUniqItemNo()
-        {
-            if (!(this.ShowUniqItemNo))
-            {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[11]/div[2]/div/label/span")).Click();
-            }
-        }
-        public void SetArea()
-        {
-            Driver.FindElement(By.Id("fieldFAreaOverAll")).SendKeys(this.Area);
         }
 
         public void SetPurposeCB()
@@ -178,80 +154,5 @@ namespace AruodasOOPTests.Models
                 }
             }
         }
-
-        public void SetDescription()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div[1]/textarea")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div[1]/textarea")).SendKeys(this.Description);
-        }
-
-        public void SetUpPhotos() 
-        {
-            IWebElement upload_file = Driver.FindElement(By.XPath("//*[@id=\"uploadPhotoBtn\"]/input"));
-
-            upload_file.SendKeys("C:\\Users\\akvile.kondrotaite\\OneDrive - SERMO\\Desktop\\Test files\\Images\\JPG\\alpaca.jpg");
-        }
-
-        public void SetYoutubeLink()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[30]/span[1]/input")).SendKeys(this.YoutubeLink);
-
-        }
-
-        public void SetTour3DLink()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[31]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[31]/span[1]/input")).SendKeys(this.Tour3DLink);
-
-        }
-
-        public void SetLotPrice()
-        {
-            Driver.FindElement(By.Id("priceField")).Click();
-            Driver.FindElement(By.Id("priceField")).SendKeys(this.LotPrice);
-
-        }
-
-        public void SetPhoNo()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[34]/span[1]/input")).SendKeys(this.PhoNo);
-
-        }
-
-        public void SetEmail()
-        {
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).Click();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).Clear();
-            Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[35]/span[1]/input")).SendKeys(this.Email);
-
-        }
-
-        public void SetDoNotShowEmail()
-        {
-            if (this.DoNotShowEmail)
-            {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[36]/div/div/div/label/span")).Click();
-            }
-
-        }
-
-        public void SetTurnOffChat()
-        {
-            if (this.TurnOffChat)
-            {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[37]/div/div/div/label/span")).Click();
-            }
-        }
-
-        public void SetAcceptTandC()
-        {
-            if (this.AcceptTandC)
-            {
-                Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[38]/span[1]/div/div/label/span")).Click();
-            }
-        }
-
     }
 }
