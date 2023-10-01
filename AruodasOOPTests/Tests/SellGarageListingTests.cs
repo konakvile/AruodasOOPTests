@@ -17,8 +17,8 @@ namespace AruodasOOPTests.Tests
         [Test]
         public void SellGarageListingMaxPositiveTest() 
         {
-            Garage gar1 = new Garage("Vilnius", "Vilniaus", "Antakalnis", "Tverečiaus", true, "15", false, "555566667777", true, 
-                "100", 6, 7, true, new string[] { "1", "8", "4" },
+            Garage gar1 = new Garage("Vilnius", "Vilniaus", "Antakalnis", "Tverečiaus", false, "15", false, "555566667777", true, 
+                "100", 6, 7, true, new string[] { "2", "8", "4" },
                 "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. " +
                 "Junk MTV quiz graced by fox whelps. Bawds jog, flick quartz, vex nymphs. " +
                 "Waltz, bad nymph, for quick jigs vex! Fox nymphs grab quick-jived waltz. " +
@@ -28,9 +28,9 @@ namespace AruodasOOPTests.Tests
                 "37060750088", "pardaveeeejai88@harakirimail.com", true, true, true);
 
            gar1.FillInListingMax();
-          // SubmitListing();
-          // Thread.Sleep(2000);
-          // Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
+           SubmitListing();
+           Thread.Sleep(2000);
+           Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
 
         }
 
