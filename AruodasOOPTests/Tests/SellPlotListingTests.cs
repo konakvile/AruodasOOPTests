@@ -26,6 +26,7 @@ namespace AruodasOOPTests.Tests
 
            sklypas.FillInListingMax();
            SubmitListing();
+           Thread.Sleep(2000);
            Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
 
 

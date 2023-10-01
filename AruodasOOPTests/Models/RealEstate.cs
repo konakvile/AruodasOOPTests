@@ -68,7 +68,7 @@ namespace AruodasOOPTests.Models
             AcceptTandC = acceptTandC;
         }
 
-        // Tik minimalaus uzpildymo testams
+        // Tik minimalaus uzpildymo testui plot
         public RealEstate (string region, string settlement, string area, string lotPrice, string phoNo, bool acceptTandC)
         {
             this.Driver = DriverClass.Driver;
@@ -77,6 +77,20 @@ namespace AruodasOOPTests.Models
             Region = region;
             Settlement = settlement;
             Area = area;
+            LotPrice = lotPrice;
+            PhoNo = phoNo;
+            AcceptTandC = acceptTandC;
+
+        }
+
+        // Tik minimalaus uzpildymo testui garage
+        public RealEstate(string region, string settlement, string lotPrice, string phoNo, bool acceptTandC)
+        {
+            this.Driver = DriverClass.Driver;
+            this.Wait = DriverClass.Wait;
+
+            Region = region;
+            Settlement = settlement;
             LotPrice = lotPrice;
             PhoNo = phoNo;
             AcceptTandC = acceptTandC;

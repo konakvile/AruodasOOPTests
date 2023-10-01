@@ -4,6 +4,8 @@ using OpenQA.Selenium;
 using AruodasOOPTests.Models;
 using OpenQA.Selenium.Support.UI;
 using AruodasOOPTests.Helpers;
+using System;
+using SeleniumExtras.WaitHelpers;
 
 namespace AruodasOOPTests.Tests
 {
@@ -11,7 +13,7 @@ namespace AruodasOOPTests.Tests
     {
         public static IWebDriver Driver;
 
-        /*
+        
         [Test]
         public void SellGarageListingMaxPositiveTest() 
         {
@@ -25,23 +27,24 @@ namespace AruodasOOPTests.Tests
                 "37060750088", "pardaveeeejai88@harakirimail.com", true, true, true);
 
            gar1.FillInListingMax();
-          // SubmitListing();
-          //Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
+           SubmitListing();
+           Thread.Sleep(2000);
+           Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
 
         }
-        */
 
-        
+
+
         [Test]
         public void SellGarageListingMinPositiveTest()
         {
-            Garage gar2 = new Garage("Vilnius", "Vilniaus", true, 4, 1, "2500", "37060751052", true);
+            Garage gar2 = new Garage("Vilnius", "Vilniaus", "25", true, 4, 1, "2500", "37060751052", true);
             gar2.FillInListingMin();
-           // SubmitListing();
-           // Thread.Sleep(2000);
-          //  Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
+            SubmitListing();
+            Thread.Sleep(2000);
+            Helpers.CustomAsserts.AssertEqualsXPath("/html/body/div[1]/div[1]/div[2]/div/span", "Paslaugų paketo pasirinkimas");
         }
-        
+
 
         [OneTimeSetUp]
         public void Initialize()
