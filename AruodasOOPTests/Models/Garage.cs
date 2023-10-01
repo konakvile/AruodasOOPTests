@@ -22,7 +22,7 @@ namespace AruodasOOPTests.Models
          */
         public int Type { get; set; }
         public int CarCapacity { get; set; }
-        public bool MarkDetails { get; set; }
+        public bool ExtraFeatures { get; set; }
         public string[] FeaturesCB { get; set; }
         
         public Garage()
@@ -40,7 +40,7 @@ namespace AruodasOOPTests.Models
 
         // maksimalus objekto uzpildymas (butini ir nebutini laukai)
         public Garage(string region, string settlement, string microdistrict, string street, bool garageOrParkingSpace, string streetNo, 
-            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, int type, int carCapacity,
+            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, int type, int carCapacity, bool extraFeatures, string[] featuresCB,
             string description, string upPhoto, string youtubeLink, string tour3DLink, string lotPrice, 
             string phoNo, string email, bool doNotShowEmail, bool turnOffChat, bool acceptTandC) : base(region, settlement, microdistrict, street, uniqItemNo, 
                 showuniqItemNo, area, description, upPhoto, youtubeLink, tour3DLink, lotPrice, phoNo, email, doNotShowEmail, turnOffChat, acceptTandC)
@@ -50,6 +50,8 @@ namespace AruodasOOPTests.Models
             ShowStreetNo = showStreetNo;
             Type = type;
             CarCapacity = carCapacity;
+            ExtraFeatures = extraFeatures;
+            FeaturesCB = featuresCB;
         }
 
         override public void FillInListingMin()
@@ -69,6 +71,7 @@ namespace AruodasOOPTests.Models
             SetGarageOrParkingSpace();
             SetType();
             SetCarCapacity();
+            SetExtraFeatures();
         }
 
         override public void SetLocation()
@@ -205,6 +208,67 @@ namespace AruodasOOPTests.Models
                     case "6": // Heating
                         Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div[6]/label/span")).Click();
                         break;
+                    case "7": // Interested in exchanging
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div/div/label/span")).Click();
+                        break;
+                    case "8": // Sale by auction
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[27]/div/div/div/label/span")).Click();
+                        break;
+                }
+            }
+        }
+
+        public void SetFeaturesCBParkingSpace()
+        {
+            for (int i = 0; i < this.FeaturesCB.Length; i++)
+            {
+                switch (this.FeaturesCB[i])
+                {
+                    case "1": // Security
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[1]/label/span")).Click();
+                        break;
+                    case "2": // Automatic gates
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[2]/label/span")).Click();
+                        break;
+                    case "3": // Heating
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[3]/label/span")).Click();
+                        break;
+                    case "4": // Lock
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[4]/label/span")).Click();
+                        break;
+                    case "5": // Fenced
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[5]/label/span")).Click();
+                        break;
+                    case "6": // Under the roof
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[6]/label/span")).Click();
+                        break;
+                    case "7": // Storeroom
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[24]/div/div[7]/label/span")).Click();
+                        break;
+                    case "8": // Interested in exchanging
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[26]/div/div/div/label/span")).Click();
+                        break;
+                    case "9": // Sale by auction
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[27]/div/div/div/label/span")).Click();
+                        break;
+                }
+            }
+        }
+
+        public void SetExtraFeatures()
+        {
+
+            if (this.ExtraFeatures)
+            {
+                if (this.GarageOrParkingSpace)
+                {
+                    Driver.FindElement(By.Id("showMoreFields")).Click();
+                    SetFeaturesCBGarage();
+                }
+                else 
+                {
+                    Driver.FindElement(By.Id("showMoreFields")).Click();
+                    SetFeaturesCBParkingSpace();
                 }
             }
         }
