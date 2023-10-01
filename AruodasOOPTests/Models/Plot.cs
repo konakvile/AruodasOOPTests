@@ -19,8 +19,10 @@ namespace AruodasOOPTests.Models
          * "1" Residential land, "2" Manufacturing land, "3" Agricultural, "4" Collective garden, 
          * "5" Forestrial, "6" Factory, "7" Storage, "8" Commercial, "9" Recreational, "10" Other */
         public string[] PurposeCB { get; set; }
+        public bool ExtraFeatures { get; set; }
+        public string[] FeaturesCB { get; set; }
 
-        
+
         public Plot () : base() 
         { 
         }
@@ -42,7 +44,7 @@ namespace AruodasOOPTests.Models
 
         // maksimalus objekto uzpildymas (butini ir nebutini laukai)
         public Plot(string region, string settlement, string microdistrict, string street, string streetNo, 
-            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, string[] purposeCB, 
+            bool showStreetNo, string uniqItemNo, bool showuniqItemNo, string area, string[] purposeCB, bool extraFeatures, string[] featuresCB,
             string description, string upPhoto, string youtubeLink, string tour3DLink, string lotPrice, 
             string phoNo, string email, bool doNotShowEmail, bool turnOffChat, bool acceptTandC) : base(region, 
                 settlement, microdistrict, street, uniqItemNo, showuniqItemNo, area, description, upPhoto, 
@@ -50,7 +52,9 @@ namespace AruodasOOPTests.Models
         {
             StreetNo = streetNo;
             ShowStreetNo = showStreetNo;
-            PurposeCB = purposeCB;   
+            PurposeCB = purposeCB; 
+            ExtraFeatures = extraFeatures;
+            FeaturesCB = featuresCB;
         }
 
         /* Leaving the code for learning purposes, cannot transfer to RealEstate class
@@ -85,6 +89,7 @@ namespace AruodasOOPTests.Models
 
             base.FillInListingMax();
             SetPurposeCB();
+            SetExtraFeatures();
         }
 
         override public void FillInListingMin()
@@ -152,6 +157,58 @@ namespace AruodasOOPTests.Models
                         Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[16]/div/div[10]/label/span")).Click();
                         break;
                 }
+            }
+        }
+
+        public void SetFeaturesCB()
+        {
+            for (int i = 0; i < this.FeaturesCB.Length; i++)
+            {
+                switch (this.FeaturesCB[i])
+                {
+                    case "1": // Electricity
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[1]/label/span")).Click();
+                        break;
+                    case "2": // Gas
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[2]/label/span")).Click();
+                        break;
+                    case "3": // Sewage
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[3]/label/span")).Click();
+                        break;
+                    case "4": // Marginal land
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[4]/label/span")).Click();
+                        break;
+                    case "5": // Near forest
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[5]/label/span")).Click();
+                        break;
+                    case "6": // No buildings
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[6]/label/span")).Click();
+                        break;
+                    case "7": // Geodesic measurements
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[7]/label/span")).Click();
+                        break;
+                    case "8": // With coast
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[8]/label/span")).Click();
+                        break;
+                    case "9": // Paved road
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[20]/div/div[9]/label/span")).Click();
+                        break;
+                    case "10": // Interested in exchanging 
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[22]/div/div/div/label/span")).Click();
+                        break;
+                    case "11": // Sale by auction
+                        Driver.FindElement(By.XPath("//*[@id=\"newObjectForm\"]/ul/li[23]/div/div/div/label/span")).Click();
+                        break;
+                }
+            }
+        }
+
+        public void SetExtraFeatures()
+        {
+            if (this.ExtraFeatures)
+            {
+                Driver.FindElement(By.Id("showMoreFields")).Click();
+                SetFeaturesCB();
             }
         }
     }
