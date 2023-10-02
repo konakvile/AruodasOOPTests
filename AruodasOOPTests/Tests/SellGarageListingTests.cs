@@ -17,6 +17,7 @@ namespace AruodasOOPTests.Tests
         [Test]
         public void SellGarageListingMaxPositiveTest() 
         {
+          
             Garage gar1 = new Garage("Vilnius", "Vilniaus", "Antakalnis", "Tverečiaus", false, "15", false, "555566667777", true, 
                 "100", 6, 7, true, new string[] { "2", "8", "4" },
                 "The quick, brown fox jumps over a lazy dog. DJs flock by when MTV ax quiz prog. " +
@@ -57,8 +58,7 @@ namespace AruodasOOPTests.Tests
 
             DriverClass.Driver = new ChromeDriver();
             DriverClass.Wait = new WebDriverWait(DriverClass.Driver, TimeSpan.FromSeconds(5));
-            
-
+           
             Driver = DriverClass.Driver;
             Driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             Driver.Manage().Window.Maximize();

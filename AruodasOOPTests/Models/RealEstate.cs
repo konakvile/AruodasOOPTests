@@ -67,6 +67,7 @@ namespace AruodasOOPTests.Models
             TurnOffChat = turnOffChat;
             AcceptTandC = acceptTandC;
         }
+      
 
         // Tik minimalaus uzpildymo testui plot
         public RealEstate (string region, string settlement, string area, string lotPrice, string phoNo, bool acceptTandC)
@@ -127,13 +128,13 @@ namespace AruodasOOPTests.Models
 
         public void SetSettlement()
         {
-
+            
             Driver.FindElement(By.Id("districtTitle")).Click();
-
+          
             IList<IWebElement> lis = Driver.FindElements(By.ClassName("dropdown-input-values-address"))[1].FindElements(By.TagName("li"));
             Console.WriteLine("SUSKAICIUOTOS GYVENVIETES: " + lis.Count);
 
-            // Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
+           // Wait = new WebDriverWait(Driver, TimeSpan.FromSeconds(5));
             // Wait.Until(ExpectedConditions.ElementExists(By.Id("district").FindElement(By.ClassName("dropdown-input-values-address"))).FindElement(By.TagName("li[" + (settlementCount + 1) + "]"))).Click();
             //*[@id="districts_461"]/li[89]
 

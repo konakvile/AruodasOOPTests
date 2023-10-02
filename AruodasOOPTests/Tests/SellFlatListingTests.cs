@@ -7,7 +7,7 @@ using AruodasOOPTests.Helpers;
 
 namespace AruodasOOPTests.Tests
 {
-    public class SellPlotListingTests
+    public class SellFlatListingTests
     {
         public static IWebDriver Driver;
 
